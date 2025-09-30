@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  solana-node:
+    image: solanalabs/solana:1.18
+    ports:
+      - "8899:8899" # RPC
+      - "8900:8900" # Gossip
+    volumes:
+      - ./ledger:/ledger
+    command: solana-test-validator
+  monitoring:
+    build: .
+    depends_on:
+      - solana-node
+    environment:
+      - PROMETHEUS_URL=http://prometheus:9090
